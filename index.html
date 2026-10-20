@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TinyBee $BEE</title>
+  <meta name="description" content="TinyBee ($BEE) — the next TikTok brain rot meme on Solana.">
+  <meta property="og:title" content="TinyBee $BEE">
+  <meta property="og:description" content="The next TikTok brain rot meme. On Solana.">
+  <meta property="og:image" content="bee-512.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sky-top: #7d86b8;
+      --sky-mid: #c9a3c4;
+      --sky-low: #f0a9a2;
+      --sky-glow: #f7c6a8;
+      --hill: #2e2a45;
+      --honey: #e0a547;
+      --honey-deep: #b8692e;
+      --bee-dark: #3a1424;
+      --wing: #3d7fe0;
+      --cream: #fff4e8;
+      --ink: #2a1420;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      font-family: "Fredoka", system-ui, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 30%, var(--sky-low) 62%, var(--sky-glow) 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* lo-fi grain like the video */
+    body::after {
+      content: "";
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 50;
+      opacity: .16;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    /* drifting clouds */
+    .clouds { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .cloud {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(110, 120, 175, .45);
+      filter: blur(28px);
+      animation: drift linear infinite;
+    }
+    .cloud.c1 { width: 520px; height: 120px; top: 8%;  left: -30%; animation-duration: 70s; }
+    .cloud.c2 { width: 380px; height: 90px;  top: 26%; left: -20%; animation-duration: 95s; animation-delay: -40s; background: rgba(150, 140, 200, .35); }
+    .cloud.c3 { width: 620px; height: 140px; top: 48%; left: -40%; animation-duration: 120s; animation-delay: -70s; background: rgba(120, 110, 170, .28); }
+    .cloud.c4 { width: 300px; height: 70px;  top: 70%; left: -20%; animation-duration: 80s; animation-delay: -20s; background: rgba(255, 220, 210, .45); }
+    @keyframes drift { to { transform: translateX(180vw); } }
+
+    .hills {
+      position: fixed; left: 0; right: 0; bottom: 0; height: 16vh;
+      z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(120% 100% at 20% 100%, var(--hill) 60%, transparent 61%),
+        radial-gradient(90% 80% at 85% 100%, #3d3657 60%, transparent 61%);
+      opacity: .85;
+      filter: blur(1px);
+    }
+
+    main, header, footer { position: relative; z-index: 2; }
+
+    /* header */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+      max-width: 1100px; margin: 0 auto; padding: 18px 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--cream); }
+    .brand img { width: 48px; height: 48px; border-radius: 50%; border: 3px solid var(--cream); box-shadow: 0 4px 0 var(--bee-dark); }
+    .brand span { font-family: "Chewy", cursive; font-size: 1.7rem; text-shadow: 0 3px 0 var(--bee-dark); letter-spacing: .5px; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: "Fredoka", sans-serif; font-weight: 700; font-size: 1rem;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 3px solid var(--bee-dark);
+      background: var(--cream);
+      color: var(--bee-dark);
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 5px 0 var(--bee-dark);
+      transition: transform .12s, box-shadow .12s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 7px 0 var(--bee-dark); }
+    .btn:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--bee-dark); }
+    .btn svg { width: 18px; height: 18px; }
+    .btn.honey { background: var(--honey); }
+
+    /* hero */
+    .hero { text-align: center; padding: 10px 16px 0; }
+    .title {
+      font-family: "Chewy", cursive;
+      font-size: clamp(3.4rem, 13vw, 8.5rem);
+      line-height: .95;
+      color: var(--honey);
+      background: linear-gradient(180deg, #f6c56a 0%, var(--honey) 40%, var(--honey-deep) 75%, var(--bee-dark) 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 6px 0 var(--bee-dark)) drop-shadow(0 14px 22px rgba(58, 20, 36, .35));
+      animation: wobble 4s ease-in-out infinite;
+    }
+    .ticker {
+      display: inline-block;
+      margin-top: 10px;
+      font-family: "Chewy", cursive;
+      font-size: clamp(1.6rem, 5vw, 2.6rem);
+      color: var(--cream);
+      background: var(--wing);
+      padding: 4px 22px;
+      border-radius: 16px;
+      border: 3px solid var(--bee-dark);
+      box-shadow: 0 5px 0 var(--bee-dark);
+      transform: rotate(-3deg);
+    }
+    .lore {
+      margin: 22px auto 0;
+      max-width: 620px;
+      font-size: clamp(1.15rem, 3.4vw, 1.5rem);
+      font-weight: 600;
+      color: var(--cream);
+      text-shadow: 0 2px 0 rgba(58, 20, 36, .55);
+    }
+    @keyframes wobble {
+      0%, 100% { transform: rotate(-2deg) scale(1); }
+      50% { transform: rotate(2deg) scale(1.03); }
+    }
+
+    /* video stage */
+    .stage {
+      position: relative;
+      display: flex; justify-content: center;
+      margin: 36px auto 0;
+      padding: 0 16px;
+      max-width: 900px;
+    }
+    .bee-body { width: min(360px, 100%); }
+    .phone {
+      position: relative;
+      width: 100%;
+      padding: 12px;
+      border-radius: 34px;
+      background: linear-gradient(160deg, #f6c56a, var(--honey) 35%, var(--honey-deep) 70%, var(--bee-dark));
+      border: 4px solid var(--bee-dark);
+      box-shadow: 0 10px 0 var(--bee-dark), 0 30px 60px rgba(58, 20, 36, .4);
+    }
+    .phone::before, .phone::after {
+      /* little blue wings */
+      content: "";
+      position: absolute; top: -26px;
+      width: 70px; height: 34px;
+      background: var(--wing);
+      border: 3px solid var(--bee-dark);
+      border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+      animation: flap .35s ease-in-out infinite alternate;
+    }
+    .phone::before { left: 12%; transform-origin: right bottom; transform: rotate(-22deg); }
+    .phone::after { right: 12%; transform-origin: left bottom; transform: rotate(22deg); animation-direction: alternate-reverse; }
+    @keyframes flap {
+      from { rotate: -6deg; }
+      to { rotate: 8deg; }
+    }
+    .screen {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 9 / 16.5;
+      border-radius: 24px;
+      overflow: hidden;
+      background: #111;
+    }
+    .screen iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .legs { display: flex; justify-content: space-between; padding: 0 60px; margin-top: -2px; }
+    .legs i {
+      display: block; width: 18px; height: 30px;
+      background: linear-gradient(180deg, var(--honey-deep), #d99b6a);
+      border: 3px solid var(--bee-dark);
+      border-top: 0;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .floater {
+      position: absolute;
+      border-radius: 50%;
+      border: 3px solid var(--cream);
+      box-shadow: 0 6px 0 var(--bee-dark);
+      animation: bob 3.2s ease-in-out infinite;
+    }
+    .floater.f1 { width: 110px; left: 2%; top: 12%; }
+    .floater.f2 { width: 74px;  right: 4%; top: 6%; animation-delay: -1.2s; }
+    .floater.f3 { width: 90px;  right: 1%; bottom: 14%; animation-delay: -2s; }
+    .floater.f4 { width: 60px;  left: 8%; bottom: 8%; animation-delay: -.6s; }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0) rotate(-6deg); }
+      50% { transform: translateY(-18px) rotate(6deg); }
+    }
+
+    .watch { text-align: center; margin-top: 28px; }
+
+    /* marquee */
+    .marquee {
+      margin: 56px 0 0;
+      background: var(--bee-dark);
+      color: var(--honey);
+      border-block: 4px solid var(--cream);
+      transform: rotate(-2deg);
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee div {
+      display: inline-block;
+      padding: 12px 0;
+      font-family: "Chewy", cursive;
+      font-size: clamp(1.3rem, 4vw, 2rem);
+      animation: scroll 22s linear infinite;
+    }
+    @keyframes scroll { to { transform: translateX(-50%); } }
+
+    /* CA */
+    .ca-wrap { max-width: 720px; margin: 56px auto 0; padding: 0 16px; text-align: center; }
+    .ca-label { font-family: "Chewy", cursive; font-size: 1.8rem; color: var(--cream); text-shadow: 0 3px 0 var(--bee-dark); }
+    .ca {
+      margin-top: 12px;
+      display: flex; align-items: center; gap: 10px;
+      background: var(--cream);
+      border: 4px solid var(--bee-dark);
+      border-radius: 22px;
+      padding: 10px 10px 10px 18px;
+      box-shadow: 0 6px 0 var(--bee-dark);
+    }
+    .ca code {
+      flex: 1; min-width: 0;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: clamp(.85rem, 2.6vw, 1.05rem);
+      font-weight: 600;
+      color: var(--bee-dark);
+      overflow-wrap: anywhere;
+      text-align: left;
+    }
+    .ca .btn { flex: none; background: var(--honey); box-shadow: 0 4px 0 var(--bee-dark); padding: 8px 16px; }
+
+    footer { text-align: center; padding: 64px 16px 22vh; color: var(--cream); }
+    footer .btn { margin-bottom: 18px; }
+    footer p { font-size: .9rem; opacity: .9; max-width: 520px; margin: 0 auto; text-shadow: 0 1px 0 rgba(58, 20, 36, .5); }
+
+    @media (max-width: 640px) {
+      .brand span { font-size: 1.35rem; }
+      .btn.header-tt span { display: none; }
+      .floater.f1 { width: 70px; left: -10px; }
+      .floater.f2 { width: 54px; right: -6px; }
+      .floater.f3, .floater.f4 { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="clouds" aria-hidden="true">
+    <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div><div class="cloud c4"></div>
+  </div>
+  <div class="hills" aria-hidden="true"></div>
+
+  <header>
+    <a class="brand" href="#">
+      <img src="favicon.png" alt="TinyBee logo">
+      <span>TinyBee</span>
+    </a>
+    <a class="btn header-tt" href="https://www.tiktok.com/@tinybeehee" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.6 6.7a4.8 4.8 0 0 1-3.8-4.2V2h-3.4v13.4a2.9 2.9 0 1 1-2-2.7V9.2a6.3 6.3 0 1 0 5.4 6.2V8.6a8.2 8.2 0 0 0 4.8 1.5V6.7z"/></svg>
+      <span>@tinybeehee</span>
+    </a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1 class="title">TinyBee</h1>
+      <div class="ticker">$BEE</div>
+      <p class="lore">Next TikTok brain rot meme 🐝</p>
+    </section>
+
+    <section class="stage">
+      <img class="floater f1" src="favicon.png" alt="" aria-hidden="true">
+      <img class="floater f2" src="favicon.png" alt="" aria-hidden="true">
+      <img class="floater f3" src="favicon.png" alt="" aria-hidden="true">
+      <img class="floater f4" src="favicon.png" alt="" aria-hidden="true">
+      <div class="bee-body">
+        <div class="phone">
+          <div class="screen">
+            <iframe
+              src="https://www.tiktok.com/player/v1/7697129890109295886?music_info=1&description=1&loop=1&rel=0"
+              title="TinyBee on TikTok"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              loading="lazy"></iframe>
+          </div>
+        </div>
+        <div class="legs" aria-hidden="true"><i></i><i></i></div>
+      </div>
+    </section>
+
+    <div class="watch">
+      <a class="btn honey" href="https://www.tiktok.com/@tinybeehee/video/7697129890109295886" target="_blank" rel="noopener">
+        ▶ Watch on TikTok
+      </a>
+    </div>
+
+    <div class="marquee" aria-hidden="true">
+      <div>
+        bzz bzz 🐝 TINYBEE 🐝 $BEE 🐝 BRAIN ROT 🐝 ON SOLANA 🐝 bzz bzz 🐝 TINYBEE 🐝 $BEE 🐝 BRAIN ROT 🐝 ON SOLANA 🐝&nbsp;
+        bzz bzz 🐝 TINYBEE 🐝 $BEE 🐝 BRAIN ROT 🐝 ON SOLANA 🐝 bzz bzz 🐝 TINYBEE 🐝 $BEE 🐝 BRAIN ROT 🐝 ON SOLANA 🐝&nbsp;
+      </div>
+    </div>
+
+    <section class="ca-wrap">
+      <div class="ca-label">CA</div>
+      <div class="ca">
+        <code id="ca">xxxxxxxxxxxxxxxxxxxxxxxxx</code>
+        <button class="btn" id="copy" type="button">Copy</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="btn" href="https://www.tiktok.com/@tinybeehee" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.6 6.7a4.8 4.8 0 0 1-3.8-4.2V2h-3.4v13.4a2.9 2.9 0 1 1-2-2.7V9.2a6.3 6.3 0 1 0 5.4 6.2V8.6a8.2 8.2 0 0 0 4.8 1.5V6.7z"/></svg>
+      Follow @tinybeehee
+    </a>
+    <p>$BEE is a meme coin with no intrinsic value or expectation of financial return. Just a tiny bee. bzz.</p>
+  </footer>
+
+  <script>
+    const btn = document.getElementById('copy');
+    btn.addEventListener('click', async () => {
+      const text = document.getElementById('ca').textContent.trim();
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const r = document.createRange();
+        r.selectNodeContents(document.getElementById('ca'));
+        const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+        document.execCommand('copy');
+      }
+      btn.textContent = 'Copied!';
+      setTimeout(() => (btn.textContent = 'Copy'), 1500);
+    });
+  </script>
+</body>
+</html>
